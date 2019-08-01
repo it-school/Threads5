@@ -55,13 +55,24 @@ namespace Threads5
             lock (this)
             {
                 mutex.WaitOne();//3.Блокировка кода мьютексом (начало)//
-                Console.WriteLine("\n" + (char)31 + (char)31 + (char)31 + (char)31);
-                for (i = 0; i < 360; i++)
+                try
                 {
-                    Console.Write(text);
+                    Console.WriteLine("\n" + (char)31 + (char)31 + (char)31 + (char)31);
+                    for (i = 0; i < 360; i++)
+                    {
+                        Console.Write(text);
+                        throw new Exception();
+                    }
+                        Console.WriteLine("\n" + (char)30 + (char)30 + (char)30 + (char)30);
                 }
-                Console.WriteLine("\n" + (char)30 + (char)30 + (char)30 + (char)30);
-                mutex.ReleaseMutex();
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    mutex.ReleaseMutex();
+                }
                 //3.Блокировка кода мьютексом (конец)//
                 //2. Критическая секция кода (конец) // 
             }
